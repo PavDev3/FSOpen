@@ -1,0 +1,13 @@
+
+Frontend-> Backend: HTTP Get Notes
+Backend--> Frontend: HTML Code
+Frontend-> Backend: Get .CSS
+Backend--> Frontend: Main.CSS
+Frontend-> Backend: Get .JS
+Backend--> Frontend: Main.JS
+Frontend-> Backend: Get .JS
+Frontend-> Backend: HTTP Get Data.json
+Backend--> Frontend: Content JSON
+note over Frontend: Browser render to display
+
+
