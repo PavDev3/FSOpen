@@ -33,7 +33,7 @@ const App = () => {
       <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
       <button onClick={() => setBad(bad + 1)}>Bad</button>
 
-      {feedbackGiven > 0 ? ( // Render Statistics when feedback is given
+      {feedbackGiven > 0 ? (
         <Statistics good={good} neutral={neutral} bad={bad} />
       ) : (
         <p>No feedback given</p>
