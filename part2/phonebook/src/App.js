@@ -9,6 +9,12 @@ const App = () => {
     const addPerson = (event) => {
         event.preventDefault();
 
+        // Check if the name already is use
+        if (persons.some(person => person.name === newName)) {
+            alert(`${newName} is allready added to list`);
+            return
+        }
+
         const personObject = {
             name: newName
         };
