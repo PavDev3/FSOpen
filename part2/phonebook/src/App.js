@@ -1,5 +1,44 @@
 import React, { useState } from 'react'
 
+
+const Filter = ({ searchName, handleSearchName }) => {
+    return (
+        <div>
+            filter show with <input value={searchName} onChange={handleSearchName} />
+        </div>
+    )
+}
+
+const Persons = ({ persons, searchName }) => {
+    const filteredPersons = persons.filter(person =>
+        person.name.toLowerCase().includes(searchName.toLowerCase())
+    );
+
+    return (
+        <ul>
+            {filteredPersons.map((person, index) => (
+                <li key={index}>{person.name} - {person.number}</li>
+            ))}
+        </ul>
+    );
+};
+
+const PersonForm = ({ newName, newNumber, handleNameChange, handleNumberChange, addPerson }) => {
+    return (
+        <form onSubmit={addPerson}>
+            <div>
+                name: <input value={newName} onChange={handleNameChange} />
+            </div>
+            <div>
+                number: <input value={newNumber} onChange={handleNumberChange} />
+            </div>
+            <div>
+                <button type="submit">Add</button>
+            </div>
+        </form>
+    )
+}
+
 const App = () => {
     const [persons, setPersons] = useState([
         { name: 'Arto Hellas', number: '040-123456' },
@@ -42,31 +81,23 @@ const App = () => {
         setSearchName(event.target.value)
     };
 
-    const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
-
     return (
         <div>
             <h2>Phonebook</h2>
-            <div>
-                filter show with <input value={searchName} onChange={handleSearchName} />
-            </div>
-            <form onSubmit={addPerson}>
-                <div>
-                    name: <input value={newName} onChange={handleNameChange} />
-                    <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
+
+            <Filter searchName={searchName} handleSearchName={handleSearchName} />
+
+            <h3> Add new</h3>
+            <PersonForm
+                newName={newName}
+                newNumber={newNumber}
+                handleNameChange={handleNameChange}
+                handleNumberChange={handleNumberChange}
+                addPerson={addPerson}
+            />
             <h2>Numbers</h2>
-            <ul>
-                {filteredPersons.map((person, index) => (
-                    <li key={index}>
-                        {person.name} - {person.number}
-                    </li>
-                ))}
-            </ul>
+
+            <Persons persons={persons} searchName={searchName} />
         </div>
     )
 }
