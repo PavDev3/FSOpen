@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { addPersons, getPersons } from './db';
+import { addPersons, getPersons, removePersons } from './db';
 
 
 const Filter = ({ searchName, handleSearchName }) => {
@@ -10,7 +10,7 @@ const Filter = ({ searchName, handleSearchName }) => {
     )
 }
 
-const Persons = ({ persons, searchName }) => {
+const Persons = ({ persons, searchName, handleDelete }) => {
     const filteredPersons = persons.filter(person =>
         person.name.toLowerCase().includes(searchName.toLowerCase())
     );
@@ -18,7 +18,10 @@ const Persons = ({ persons, searchName }) => {
     return (
         <ul>
             {filteredPersons.map((person, index) => (
-                <li key={index}>{person.name} - {person.number}</li>
+                <li key={index}>
+                    {person.name} - {person.number}
+                    <button onClick={() => handleDelete(person.id, person.name)}>delete</button>
+                </li>
             ))}
         </ul>
     );
@@ -56,7 +59,7 @@ const App = () => {
     const addPerson = (event) => {
         event.preventDefault();
 
-        // Check if the name already is use
+        // Check if the name already is use 
         if (persons.some(person => person.name.toLowerCase() === newName.toLocaleLowerCase())) {
             alert(`${newName} is already added to list`);
             return
@@ -86,6 +89,18 @@ const App = () => {
         setSearchName(event.target.value)
     };
 
+    const handleDelete = (id, name) => {
+        if (window.confirm(`Delete ${name}?`)) {
+            removePersons(id)
+                .then(() => {
+                    setPersons(persons.filter(person => person.id !== id));
+                })
+                .catch(error => {
+                    console.error("Error deleting person", error);
+                });
+        }
+    };
+
     return (
         <div>
             <h2>Phonebook</h2>
@@ -102,7 +117,7 @@ const App = () => {
             />
             <h2>Numbers</h2>
 
-            <Persons persons={persons} searchName={searchName} />
+            <Persons persons={persons} searchName={searchName} handleDelete={handleDelete} />
         </div>
     )
 }

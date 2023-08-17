@@ -9,3 +9,7 @@ export const addPersons = (personObject) => {
     return axios.post('http://localhost:3001/persons', personObject)
         .then(response => response.data)
 }
+
+export const removePersons = (id) => {
+    return axios.delete(`http://localhost:3001/persons/${id}`);
+}
