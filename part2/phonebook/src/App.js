@@ -1,5 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { addPersons, getPersons, removePersons } from './db';
+import './index.css'
+
+
+const Notification = ({ notification }) => {
+    if (notification === null) {
+        return null
+    }
+
+    const notificationStyle = {
+        color: notification.color,
+        background: 'lightgrey',
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    }
+
+    return (
+        <div style={notificationStyle}>
+            {notification.message}
+        </div>
+    )
+}
 
 
 const Filter = ({ searchName, handleSearchName }) => {
@@ -48,12 +72,19 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [searchName, setSearchName] = useState('');
+    const [notification, setNotification] = useState(null)
 
     useEffect(() => {
         getPersons()
             .then(setPersons)
     }, []);
 
+    const displayNotification = (newNotification) => {
+        setNotification(newNotification)
+        setTimeout(() => {
+            setNotification(null)
+        }, 5000)
+    }
 
 
     const addPerson = (event) => {
@@ -71,7 +102,12 @@ const App = () => {
         };
 
         addPersons(personObject)
-            .then(person => setPersons([...persons, person]))
+            .then(person => {
+                displayNotification({ color: 'green', message: `Added '${newName}` })
+                setPersons([...persons, person])
+            })
+
+
 
         setNewName('');
         setNewNumber('');
@@ -104,6 +140,7 @@ const App = () => {
     return (
         <div>
             <h1>Phonebook</h1>
+            <Notification notification={notification} />
 
             <Filter searchName={searchName} handleSearchName={handleSearchName} />
 
