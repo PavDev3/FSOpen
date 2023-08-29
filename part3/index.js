@@ -53,12 +53,12 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
   // Tienes que pasar el ID a numbers porque lo entiende como string
   const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
+  const person = persons.find(entry => entry.id === id)
 
   if (person) {
     response.json(person)
   } else {
-    response.status(404).end()
+    response.status(404).send('I can not find this person') // Retorna un 404 si no se encuentra la persona
   }
 })
 
