@@ -3,7 +3,7 @@ const app = express()
 
 app.use(express.json())
 
-const persons = [
+let persons = [
   {
     name: 'Arto Hellas',
     number: '040-123456',
@@ -37,41 +37,40 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
   // Tienes que pasar el ID a numbers porque lo entiende como string
   const id = Number(request.params.id)
-  const note = persons.find(note => note.id === id)
+  const person = persons.find(person => person.id === id)
 
-  if (note) {
-    response.json(note)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
 })
 
 app.post('/api/persons', (request, response) => {
-  const note = request.body
+  const person = request.body
 
-  if (!note || !note.content) {
+  if (!person || !person.name) {
     return response.status(404).json({
       error: 'Note.content is missing'
     })
   }
 
-  const ids = persons.map(note => note.id)
+  const ids = persons.map(name => name.id)
   const maxId = Math.max(...ids)
-  const newNote = {
-    id: maxId + 1,
-    content: note.content,
-    important: typeof note.important !== 'undefined' ? note.important : false,
-    date: new Date().toISOString()
+  const newContact = {
+    name: person.name,
+    number: person.number ? person.number : '',
+    id: maxId + 1
   }
 
-  persons = [...persons, newNote]
+  persons = [...persons, newContact]
 
-  response.status(201).json(newNote)
+  response.status(201).json(newContact)
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  persons = persons.filter(note => note.id !== id)
+  persons = persons.filter(name => name.id !== id)
   response.status(204).end()
 })
 
