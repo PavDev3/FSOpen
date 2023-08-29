@@ -25,6 +25,22 @@ let persons = [
     id: 4
   }
 ]
+app.get('/info', (req, res) => {
+  const currentTime = new Date()
+  const entryCount = persons.length
+
+  const responseHTML = `
+      <html>
+        <body>
+        <p>Phonebook has infor for ${entryCount} people</p>
+          <p>${currentTime}</p>
+          
+        </body>
+      </html>
+    `
+
+  res.send(responseHTML)
+})
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World</h1>')
