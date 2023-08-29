@@ -67,7 +67,13 @@ app.post('/api/persons', (request, response) => {
 
   if (!person || !person.name) {
     return response.status(404).json({
-      error: 'Note.content is missing'
+      error: 'Name or content missing'
+    })
+  }
+
+  if (persons.some(existingPerson => existingPerson.name === person.name)) {
+    return response.status(400).json({
+      error: 'Name must be unique'
     })
   }
 
